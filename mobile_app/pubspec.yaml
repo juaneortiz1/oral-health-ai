@@ -1,0 +1,12 @@
+name: oral_health_ai
+description: AI-powered oral health diagnostic mobile application
+version: 1.0.0
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  camera: ^0.9.4+21
+  provider: ^6.0.2

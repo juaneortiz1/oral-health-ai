@@ -1,0 +1,1 @@
+// Camera screen for capturing dental images
