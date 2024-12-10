@@ -1,0 +1,24 @@
+# Entornos de Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Entornos de Virtualenv
+env/
+venv/
+
+# TensorFlow y datos
+*.h5
+*.tflite
+models/
+datasets/
+uploads/
+
+# Archivos de log
+*.log
+
+# Flutter
+build/
+*.lock
+*.iml
+.idea/
