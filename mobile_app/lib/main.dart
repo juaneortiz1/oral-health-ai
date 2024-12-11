@@ -6,6 +6,8 @@ void main() {
 }
 
 class OralHealthApp extends StatelessWidget {
+  const OralHealthApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

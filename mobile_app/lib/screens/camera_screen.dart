@@ -3,6 +3,8 @@ import 'package:camera/camera.dart';
 import '../services/image_processing.dart';
 
 class CameraScreen extends StatefulWidget {
+  const CameraScreen({super.key});
+
   @override
   _CameraScreenState createState() => _CameraScreenState();
 }
@@ -37,8 +39,8 @@ class _CameraScreenState extends State<CameraScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Instrucciones para Captura'),
-          content: Column(
+          title: const Text('Instrucciones para Captura'),
+          content: const Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -52,7 +54,7 @@ class _CameraScreenState extends State<CameraScreen> {
           ),
           actions: [
             TextButton(
-              child: Text('Entendido'),
+              child: const Text('Entendido'),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -65,11 +67,11 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detector de Salud Oral'),
+        title: const Text('Detector de Salud Oral'),
         backgroundColor: Colors.blue[800],
         actions: [
           IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline),
             onPressed: _showCaptureInstructions,
           ),
         ],
@@ -85,7 +87,7 @@ class _CameraScreenState extends State<CameraScreen> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return CameraPreview(_controller!);
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
               },
             ),
@@ -96,7 +98,7 @@ class _CameraScreenState extends State<CameraScreen> {
             flex: 1,
             child: Container(
               color: Colors.grey[200],
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -114,16 +116,16 @@ class _CameraScreenState extends State<CameraScreen> {
                     ),
                   ),
                   
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   
                   // Capture Button
                   ElevatedButton.icon(
-                    icon: Icon(Icons.camera_alt),
-                    label: Text('Capturar Imagen Bucal'),
+                    icon: const Icon(Icons.camera_alt),
+                    label: const Text('Capturar Imagen Bucal'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue[700],
                       foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(vertical: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                     onPressed: () async {
                       try {
