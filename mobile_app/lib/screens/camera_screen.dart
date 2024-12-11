@@ -121,8 +121,8 @@ class _CameraScreenState extends State<CameraScreen> {
                     icon: Icon(Icons.camera_alt),
                     label: Text('Capturar Imagen Bucal'),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blue[700],
-                      onPrimary: Colors.white,
+                      backgroundColor: Colors.blue[700],
+                      foregroundColor: Colors.white,
                       padding: EdgeInsets.symmetric(vertical: 12),
                     ),
                     onPressed: () async {
