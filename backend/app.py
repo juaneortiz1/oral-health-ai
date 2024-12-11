@@ -5,12 +5,11 @@ import os
 from werkzeug.utils import secure_filename
 import sys
 import pathlib
+from tensorflow.keras.models import load_model
 
 # Agregar el directorio raíz al path para importaciones
 project_root = str(pathlib.Path(__file__).resolve().parent.parent)
 sys.path.insert(0, project_root)
-
-from ai_model.oral_health_classifier import OralHealthClassifier
 
 app = Flask(__name__)
 
@@ -22,8 +21,14 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Crear directorio de uploads si no existe
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Inicializar clasificador de salud oral
-classifier = OralHealthClassifier()
+# Cargar modelo de clasificación
+MODEL_PATH = r'ai_model\models\oral_health_classifier.h5'  # Cambia esto a la ruta donde guardaste el modelo
+model = load_model(MODEL_PATH)
+print(f"Output shape: {model.output_shape}")
+
+# Clases del modelo
+CLASS_NAMES = ['Caries', 'Gingivitis', 'Hipodontia', 'Sarro']  # Reemplaza con las clases reales de tu modelo
+CONFIDENCE_THRESHOLD = 0.6  # Umbral de confianza para determinar si el resultado es confiable
 
 def allowed_file(filename):
     """Verifica si el archivo tiene una extensión permitida"""
@@ -65,6 +70,30 @@ def enhance_image(image_path):
     
     return enhanced_path
 
+def predict_image(image_path):
+    """
+    Realiza una predicción usando el modelo cargado
+
+    Args:
+        image_path (str): Ruta de la imagen mejorada
+
+    Returns:
+        dict: Diccionario con las clases y sus probabilidades
+    """
+    # Preprocesar la imagen
+    img = cv2.imread(image_path)
+    img = cv2.resize(img, (224, 224))  # Cambia el tamaño según tu modelo
+    img = img / 255.0  # Normalización si el modelo lo requiere
+    img = np.expand_dims(img, axis=0)
+
+    # Realizar predicción
+    predictions = model.predict(img)[0]
+
+    # Crear un diccionario con las clases y sus probabilidades
+    result = {CLASS_NAMES[i]: float(predictions[i]) for i in range(len(CLASS_NAMES))}
+
+    return result
+
 @app.route('/process_oral_image', methods=['POST'])
 def process_oral_image():
     """
@@ -82,44 +111,49 @@ def process_oral_image():
             'error': 'No se ha enviado ninguna imagen',
             'status': 'failed'
         }), 400
-    
+
     file = request.files['image']
-    
+
     # Verificar que el archivo tenga un nombre y sea válido
     if file.filename == '':
         return jsonify({
             'error': 'No se ha seleccionado un archivo',
             'status': 'failed'
         }), 400
-    
+
     # Guardar imagen
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
-        
+
         try:
             # Mejorar imagen
             enhanced_path = enhance_image(filepath)
-            
+
             # Realizar predicción
-            clase, confianza = classifier.predict(enhanced_path)
-            
+            predictions = predict_image(enhanced_path)
+
+            # Determinar la clase principal
+            top_class = max(predictions, key=predictions.get)
+            top_confidence = predictions[top_class]
+
             return jsonify({
                 'status': 'success',
                 'result': {
-                    'class': clase,
-                    'confidence': float(confianza),
-                    'message': f'Detección de {clase} con {confianza*100:.2f}% de confianza'
+                    'predictions': predictions,
+                    'top_class': top_class,
+                    'top_confidence': top_confidence,
+                    'message': f'Deteccion de {top_class} con {top_confidence*100:.2f}% de confianza'
                 }
             })
-        
+
         except Exception as e:
             return jsonify({
                 'error': str(e),
                 'status': 'failed'
             }), 500
-    
+
     return jsonify({
         'error': 'Tipo de archivo no permitido',
         'status': 'failed'
