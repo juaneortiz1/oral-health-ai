@@ -1,1 +1,0 @@
-// Home screen for the mobile app
