@@ -10,7 +10,7 @@ venv/
 # TensorFlow y datos
 *.h5
 *.tflite
-models/
+
 datasets/
 uploads/
 
