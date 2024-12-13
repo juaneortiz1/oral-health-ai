@@ -28,6 +28,19 @@ class _CameraScreenState extends State<CameraScreen> {
     }
   }
 
+  Future<void> _selectFromGallery() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
   Future<void> _analyzeImage() async {
     if (_imageFile == null) return;
 
@@ -37,7 +50,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
     try {
       final result = await _apiService.uploadOralImage(_imageFile!);
-      
+
       // Navigate to results screen
       Navigator.push(
         context,
@@ -68,11 +81,11 @@ class _CameraScreenState extends State<CameraScreen> {
           children: [
             _imageFile != null
                 ? Image.file(
-                    _imageFile!,
-                    height: 300,
-                    width: 300,
-                    fit: BoxFit.cover,
-                  )
+              _imageFile!,
+              height: 300,
+              width: 300,
+              fit: BoxFit.cover,
+            )
                 : Text('No image selected'),
             SizedBox(height: 20),
             ElevatedButton(
@@ -80,13 +93,18 @@ class _CameraScreenState extends State<CameraScreen> {
               child: Text('Take Picture'),
             ),
             SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _selectFromGallery,
+              child: Text('Select from Gallery'),
+            ),
+            SizedBox(height: 10),
             _imageFile != null
                 ? ElevatedButton(
-                    onPressed: _isLoading ? null : _analyzeImage,
-                    child: _isLoading 
-                      ? CircularProgressIndicator()
-                      : Text('Analyze Image'),
-                  )
+              onPressed: _isLoading ? null : _analyzeImage,
+              child: _isLoading
+                  ? CircularProgressIndicator()
+                  : Text('Analyze Image'),
+            )
                 : Container(),
           ],
         ),
