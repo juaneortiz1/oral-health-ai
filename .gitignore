@@ -8,7 +8,6 @@ env/
 venv/
 
 # TensorFlow y datos
-*.h5
 *.tflite
 
 datasets/
