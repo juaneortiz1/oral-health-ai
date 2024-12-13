@@ -95,15 +95,31 @@ Este proyecto utiliza un modelo de inteligencia artificial para clasificar imág
     - Captura imágenes desde la app, y el backend devolverá un análisis de salud oral.
 
 ---
+## **Diagramas de Arquitectura**
+
+### ***Diagrama prototipo***
+![Imagen de WhatsApp 2024-12-12 a las 23 42 05_4870773f](https://github.com/user-attachments/assets/64960952-5780-499f-8760-809b246a4609)
+
+### ***Diagrama***
+![Imagen de WhatsApp 2024-12-12 a las 23 42 22_966249dd](https://github.com/user-attachments/assets/e9fe2842-dfe4-4916-ab2f-0a7b00fdad88)
+
+---
+
+## **Video de Demostración del Prototipo**
+
+---
+
+
+https://github.com/user-attachments/assets/2b843b3f-1a4d-4659-860c-5de90aabe8a7
+
+
 
 ## **Estado Actual**
 
 - [x] Modelo inicial de clasificación.
 - [x] Backend funcional para predicciones.
 - [x] Aplicación móvil básica con funcionalidad de captura.
-- [ ] Dataset completo para entrenamiento.
-- [ ] Optimización del modelo para producción.
-
+- [x] Dataset completo para entrenamiento.
 ---
 
 ## **Autores**
